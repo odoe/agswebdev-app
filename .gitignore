@@ -1,0 +1,10 @@
+node_modules/*
+*~
+*.swp
+.cache/*
+.grunt/*
+.idea/*
+dist/*
+*.lnk
+*ugly.js
+_SpecRunner.html
