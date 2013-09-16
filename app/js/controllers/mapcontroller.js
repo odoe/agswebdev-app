@@ -11,15 +11,6 @@
     'esri/map'
   ], function (declare, lang, on, Deferred, Map) {
 
-    // helper function to define map otions
-    function mapOptions() {
-      return {
-        basemap: 'gray',
-        center: [-118.241,34.0542],
-        zoom: 12
-      };
-    }
-
     return declare(null, {
       map: null,
       options: {},
@@ -35,7 +26,7 @@
             deferred.resolve(this.map);
           });
 
-          this.map = new Map(this.options.elem, mapOptions());
+          this.map = new Map(this.options.elem, this.options.mapOptions);
 
           on.once(this.map, 'layers-add-result', layersAdded);
 
