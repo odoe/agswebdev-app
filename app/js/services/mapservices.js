@@ -1,18 +1,24 @@
-/**
- * @author rrubalcava@lacsd.org (Rene Rubalcava)
- */
-/*global window document console define require */
+/*global define*/
+/*jshint laxcomma:true*/
 (function() {
   'use strict';
 
   define([
-    'esri/layers/FeatureLayer'
-  ], function(FeatureLayer) {
+    'esri/layers/FeatureLayer',
+    'esri/renderers/SimpleRenderer',
+    'utils/symbolUtil'
+  ], function(FeatureLayer, SimpleRenderer, symbolUtil) {
 
     function _loadServices(config) {
-      var layers = [];
+      var layers = []
+      // census tract
+        , censusLayer = new FeatureLayer('http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/CensusLaborDemo/FeatureServer/1')
+      // feature renderer
+        , renderer = new SimpleRenderer(symbolUtil.renderSymbol());
 
-      layers.push(new FeatureLayer('http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/CensusLaborDemo/FeatureServer/1'));
+      censusLayer.setRenderer(renderer);
+
+      layers.push(censusLayer);
 
       return layers;
     }
@@ -23,4 +29,4 @@
 
   });
 
-})(this);
+})();

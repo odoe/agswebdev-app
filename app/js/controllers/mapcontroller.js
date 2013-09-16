@@ -1,40 +1,49 @@
-/*global window, document, console, define, require */
+/*global define */
+/*jshint laxcomma:true*/
 (function () {
   'use strict';
 
   define([
+    'dojo/_base/declare',
+    'dojo/_base/lang',
     'dojo/on',
     'dojo/Deferred',
     'esri/map'
-  ], function (on, Deferred, Map) {
+  ], function (declare, lang, on, Deferred, Map) {
 
+    // helper function to define map otions
     function mapOptions() {
       return {
         basemap: 'gray',
-        center: [-118.20959546463835,34.28548773859569],
-        zoom: 10
+        center: [-118.241,34.0542],
+        zoom: 12
       };
     }
 
-    function _start(params) {
+    return declare(null, {
+      map: null,
+      options: {},
 
-      var deferred = new Deferred(),
-          map = new Map(params.elem, mapOptions());
+      constructor: function(options) {
+        declare.safeMixin(this.options, options);
+      },
 
-      on.once(map, 'layers-add-result', function(layers) {
-        deferred.resolve(map);
-      });
+      // public methods
+      load: function() {
+        var deferred = new Deferred()
+          , layersAdded = lang.hitch(this, function(layers) {
+            deferred.resolve(this.map);
+          });
 
-      // TODO add layers from params
-      map.addLayers(params.layers);
+          this.map = new Map(this.options.elem, mapOptions());
 
-      return deferred.promise;
-    }
+          on.once(this.map, 'layers-add-result', layersAdded);
 
+          this.map.addLayers(this.options.layers);
 
-    return {
-      start: _start
-    };
+          return deferred.promise;
+      }
+    });
 
   });
-}).call(this);
+})();

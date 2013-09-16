@@ -1,4 +1,4 @@
-/*global window document console define require */
+/*global define*/
 (function() {
   'use strict';
 
@@ -31,4 +31,4 @@
 
   });
 
-})(this);
+})();
